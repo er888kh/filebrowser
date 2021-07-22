@@ -21,11 +21,14 @@ export function parseToken(token) {
 
 export async function validateLogin() {
   try {
-    if (localStorage.getItem("jwt")) {
-      await renew(localStorage.getItem("jwt"));
+    const queryString = new URLSearchParams(window.location.search);
+    const queryJWT = queryString.get("jwt");
+    const jwt = queryJWT == null ? localStorage.getItem("jwt") : queryJWT;
+    if (jwt) {
+      await renew(jwt);
     }
   } catch (_) {
-    console.warn('Invalid JWT token in storage') // eslint-disable-line
+    console.warn('Invalid JWT token in storage/query') // eslint-disable-line
   }
 }
 
